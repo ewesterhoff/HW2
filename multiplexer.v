@@ -15,10 +15,26 @@ endmodule
 
 module structuralMultiplexer
 (
-    output out,
+    output out, m0, m1, m2, m3, naddr0, naddr1,
     input address0, address1,
     input in0, in1, in2, in3
 );
-    // Your multiplexer code here
+    // define gates with delays
+    `define AND and #50
+    `define OR or #50
+    `define NOT not #50
+
+    wire naddr0, naddr1;
+    wire m0,m1,m2,m3;
+
+    `NOT invA(naddr0, address0);
+    `NOT invB(naddr1, address1);
+    
+    `AND andgateA(m0,in0,naddr0,naddr1);
+    `AND andgateB(m1,in1,address0,naddr1);
+    `AND andgateC(m2,in2,naddr0,address1);
+    `AND andgateD(m3,in3,address0,address1);
+
+    `OR orgate(out,m0,m1,m2,m3);
 endmodule
 
